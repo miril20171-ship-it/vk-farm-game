@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ферма</title>
+  <style>body{margin:0;padding:0;text-align:center;background:#e8f5e9;}</style>
+</head>
+<body>
+  <h2>🌾 Ферма запускается...</h2>
+  <div id="status">Подключение к ВК...</div>
+
+  <!-- VK Bridge -->
+  <script src="https://unpkg.com/@vkontakte/vk-bridge/dist/vk-bridge.min.js"></script>
+  <script>
+    if (typeof vkBridge !== 'undefined') {
+      document.getElementById('status').textContent = 'VK Bridge загружен';
+      vkBridge.send('VKWebAppInit').then(() => {
+        document.getElementById('status').textContent = 'Готово! Нажмите кнопку ниже.';
+        const btn = document.createElement('button');
+        btn.textContent = 'Пригласить друга';
+        btn.style.margin = '20px';
+        btn.onclick = () => {
+          vkBridge.send('VKWebAppShare', { link: 'https://vk.com/app123456789' });
+        };
+        document.body.appendChild(btn);
+      }).catch(e => {
+        document.getElementById('status').textContent = 'Ошибка: ' + e.message;
+      });
+    } else {
+      document.getElementById('status').textContent = 'VK Bridge не загружен';
+    }
+  </script>
+</body>
+</html>
